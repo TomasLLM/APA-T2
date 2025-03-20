@@ -22,7 +22,6 @@ True
 '''
 Determinación de la primalidad y decomposición de un número en factores primos
 '''
-import math
 
 if __name__ == '__main__':
     import doctest
@@ -73,6 +72,46 @@ def mcm(numero1, numero2):
     desc1 = descompon(numero1) # Descomponemos los dos numeros
     desc2 = descompon(numero2)
 
-    # He encontrado la funcion math.prod() que multiplica elementos de una lista
+    factores_mcm = list(desc1) # creamos una lista que usaremos para almacenar los factores que dan el mcm
 
+    # añadimos los de la segunda lista quitando los que haya ya
+    for f in desc2:
+        if factores_mcm.count(f) < desc2.count(f): #si hay mas x en desc2 que en factores_mcm, agrega una x
+            factores_mcm.append(f)
+
+    # multiplicamos la lista
+    mcm = 1
+    for i in factores_mcm:
+        mcm = mcm * i
+
+    return mcm
     
+def mcd(numero1, numero2):
+    '''
+    devuelve el màximo común divisor de los dos numeros
+    '''
+    desc1 = descompon(numero1) # Descomponemos los dos numeros
+    desc2 = descompon(numero2)
+
+    factores_mcd = list(desc1) # creamos una lista que usaremos para almacenar los factores que dan el mcd
+
+    # añadimos los de la segunda lista quitando los que haya ya
+    for f in desc2:
+        if factores_mcd.count(f) > desc2.count(f): #si hay mas x en factores estas no son necesarias
+            factores_mcd.remove(f)
+
+    # ahora tenemos una lista que contiene tambien los numeros que tiene desc1 que no tiene desc2, los quitamos
+    for f in factores_mcd:
+        if factores_mcd.count(f) > desc2.count(f): #si hay mas x en factores estas no son necesarias
+            factores_mcd.remove(f)
+
+    # multiplicamos la lista
+    mcd = 1
+    for i in factores_mcd:
+        mcd = mcd * i
+
+    return mcd
+
+'''
+Obtención del mínimo común múltiplo y el máximo común dicisor para un número arbitrario de argumentos
+'''
