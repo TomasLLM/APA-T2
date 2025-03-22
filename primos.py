@@ -17,6 +17,40 @@ False
 >>> esPrimo(1021)
 True
 
+Devuelve true si es primo y false si no lo es
+
+>>> [ numero for numero in range(2, 50) if esPrimo(numero) ]
+[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]
+
+Devuelve tupla con los primos menores a numero
+
+>>> primos(50)
+(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47)
+
+Deveuelve tupla con la decomposición en primos de numero
+
+>>> descompon(36 * 175 * 143)
+(2, 2, 3, 3, 5, 5, 7, 11, 13)
+
+Devuelve el mínimo común múltiplo de los dos numeros
+
+>>> mcm(90, 14)
+630
+
+devuelve el màximo común divisor de los dos numeros
+
+>>> mcd(924, 780)
+12
+
+MCM de varis numeros
+    
+>>> mcm(42, 60, 70, 65)
+1260
+
+MCD de varis numeros
+    
+>>> mcd(840, 630, 1050, 1470)
+210
 '''
 
 '''
@@ -32,6 +66,9 @@ if __name__ == '__main__':
 def esPrimo(numero):
     '''
     Devuelve true si es primo y false si no lo es
+
+    >>> [ numero for numero in range(2, 50) if esPrimo(numero) ]
+    [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]
     '''
     for test in range(2, numero):
         if numero % test == 0:
@@ -41,6 +78,9 @@ def esPrimo(numero):
 def primos(numero):
     '''
     Devuelve tupla con los primos menores a numero
+
+    >>> primos(50)
+    (2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47)
     '''
     primos = []
     for n in range(2, numero):
@@ -51,6 +91,9 @@ def primos(numero):
 def descompon(numero):
     '''
     Deveuelve tupla con la decomposición en primos de numero
+
+    >>> descompon(36 * 175 * 143)
+    (2, 2, 3, 3, 5, 5, 7, 11, 13)
     '''
     factores = []
     for primo in primos(numero + 1):  # usamos funcion anterior
@@ -68,6 +111,9 @@ Obtención del mínimo común múltiplo y el máximo común divisor
 def mcm(numero1, numero2):
     '''
     Devuelve el mínimo común múltiplo de los dos numeros
+    
+    >>> mcm(90, 14)
+    630
     '''
     desc1 = descompon(numero1) # Descomponemos los dos numeros
     desc2 = descompon(numero2)
@@ -89,6 +135,9 @@ def mcm(numero1, numero2):
 def mcd(numero1, numero2):
     '''
     devuelve el màximo común divisor de los dos numeros
+
+    >>> mcd(924, 780)
+    12
     '''
     desc1 = descompon(numero1) # Descomponemos los dos numeros
     desc2 = descompon(numero2)
@@ -113,5 +162,30 @@ def mcd(numero1, numero2):
     return mcd
 
 '''
-Obtención del mínimo común múltiplo y el máximo común dicisor para un número arbitrario de argumentos
+Obtención del mínimo común múltiplo y el máximo común divisor para un número arbitrario de argumentos
 '''
+
+def mcmN(*numeros):
+    '''
+    MCM de varis numeros
+    
+    >>> mcm(42, 60, 70, 65)
+    1260
+    '''
+    result = numeros[0] # inicialitzem el resultat
+    for n in numeros[1:]: #fem un bucle que vagi fent la mcm
+        result = mcm(result, n)
+    return result 
+
+def mcdN(*numeros):
+    '''
+    MCD de varis numeros
+    
+    >>> mcd(840, 630, 1050, 1470)
+    210
+    '''
+    result = numeros[0] # inicialitzem el resultat
+    for n in numeros[1:]: #fem un bucle que vagi fent la mcm
+        result = mcd(result, n)
+    return result 
+
