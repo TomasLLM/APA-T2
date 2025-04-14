@@ -16,52 +16,11 @@ False
 
 >>> esPrimo(1021)
 True
-
-Devuelve true si es primo y false si no lo es
-
->>> [ numero for numero in range(2, 50) if esPrimo(numero) ]
-[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47]
-
-Devuelve tupla con los primos menores a numero
-
->>> primos(50)
-(2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47)
-
-Deveuelve tupla con la decomposición en primos de numero
-
->>> descompon(36 * 175 * 143)
-(2, 2, 3, 3, 5, 5, 7, 11, 13)
-
-Devuelve el mínimo común múltiplo de los dos numeros
-
->>> mcm(90, 14)
-630
-
-devuelve el màximo común divisor de los dos numeros
-
->>> mcd(924, 780)
-12
-
-MCM de varis numeros
-    
->>> mcm(42, 60, 70, 65)
-1260
-
-MCD de varis numeros
-    
->>> mcd(840, 630, 1050, 1470)
-210
 '''
 
 '''
 Determinación de la primalidad y decomposición de un número en factores primos
 '''
-
-if __name__ == '__main__':
-    import doctest
-    doctest.testmod()
-
-
 
 def esPrimo(numero):
     '''
@@ -96,13 +55,15 @@ def descompon(numero):
     (2, 2, 3, 3, 5, 5, 7, 11, 13)
     '''
     factores = []
-    for primo in primos(numero + 1):  # usamos funcion anterior
-        while numero % primo == 0:   # divisible por el primo
-            factores.append(primo)
-            numero //= primo
-        if numero == 1:              # acabamos en llegar a 1
-            break
-    return tuple(factores)    
+    div = 2
+    while div * div <= numero:
+        while numero % div == 0:   # divisible por el primo
+            factores.append(div)
+            numero //= div
+        div += 1
+    if numero > 1:               # si queda un número primo
+        factores.append(numero)
+    return tuple(factores)   
 
 '''
 Obtención del mínimo común múltiplo y el máximo común divisor
@@ -139,25 +100,15 @@ def mcd(numero1, numero2):
     >>> mcd(924, 780)
     12
     '''
-    desc1 = descompon(numero1) # Descomponemos los dos numeros
-    desc2 = descompon(numero2)
+    desc1 = list(descompon(numero1)) # Descomponemos los dos numeros
+    desc2 = list(descompon(numero2))
 
-    factores_mcd = list(desc1) # creamos una lista que usaremos para almacenar los factores que dan el mcd
-
-    # añadimos los de la segunda lista quitando los que haya ya
-    for f in desc2:
-        if factores_mcd.count(f) > desc2.count(f): #si hay mas x en factores estas no son necesarias
-            factores_mcd.remove(f)
-
-    # ahora tenemos una lista que contiene tambien los numeros que tiene desc1 que no tiene desc2, los quitamos
-    for f in factores_mcd:
-        if factores_mcd.count(f) > desc2.count(f): #si hay mas x en factores estas no son necesarias
-            factores_mcd.remove(f)
-
-    # multiplicamos la lista
     mcd = 1
-    for i in factores_mcd:
-        mcd = mcd * i
+
+    for i in desc1: # recorremos la primera lista
+        if i in desc2:
+            desc2.remove(i)
+            mcd = mcd * i
 
     return mcd
 
@@ -169,23 +120,31 @@ def mcmN(*numeros):
     '''
     MCM de varis numeros
     
-    >>> mcm(42, 60, 70, 65)
+    >>> mcmN(42, 60, 70, 63)
     1260
     '''
-    result = numeros[0] # inicialitzem el resultat
-    for n in numeros[1:]: #fem un bucle que vagi fent la mcm
-        result = mcm(result, n)
+    if not numeros:
+        return 1
+    result = numeros[0]
+    for numero in numeros[1:]:
+        result = mcm(result, numero)
     return result 
 
 def mcdN(*numeros):
     '''
     MCD de varis numeros
     
-    >>> mcd(840, 630, 1050, 1470)
+    >>> mcdN(840, 630, 1050, 1470)
     210
     '''
-    result = numeros[0] # inicialitzem el resultat
-    for n in numeros[1:]: #fem un bucle que vagi fent la mcm
-        result = mcd(result, n)
+    if not numeros:
+        return 1
+    result = numeros[0]
+    for numero in numeros[1:]:
+        result = mcd(result, numero)
     return result 
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()
 
